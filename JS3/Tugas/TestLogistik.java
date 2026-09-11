@@ -1,26 +1,37 @@
 package JS3.Tugas;
+import java.util.Scanner;
 
 public class TestLogistik {
     public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
         Kontainer kontainerAlfa = new Kontainer("REQ-9988", "PT. Maju Bersama", 5000);
 
         System.out.println("Nama Pemilik Kontainer: " + kontainerAlfa.getNamaPemilik());
         System.out.println("Kapasitas Maksimal: " + kontainerAlfa.getKapasitasMaksimal() + " kg");
 
-        System.out.println("\nMemasukkan muatan baru seberat 6.000 kg...");
-        kontainerAlfa.tambahMuatan(6000);
-        System.out.println("Berat muatan saat ini: " + kontainerAlfa.getBeratMuatanSaatIni() + " kg");
+        while (kontainerAlfa.getBeratMuatanSaatIni() == 0) {
+            System.out.print("Masukkan berat muatan baru yang ingin ditambahkan (kg): ");
+            double inputTambah = in.nextDouble();
+            System.out.println("Memasukkan muatan baru seberat " + inputTambah + " kg...");
+            kontainerAlfa.tambahMuatan(inputTambah);
+            System.out.println("Berat muatan saat ini: " + kontainerAlfa.getBeratMuatanSaatIni() + " kg\n");
+        }
 
-        System.out.println("\nMemasukkan muatan baru seberat 4.000 kg...");
-        kontainerAlfa.tambahMuatan(4000);
-        System.out.println("Berat muatan saat ini: " + kontainerAlfa.getBeratMuatanSaatIni() + " kg");
+        boolean selesai = false;
+        while (!selesai) {
+            System.out.print("Masukkan berat muatan yang ingin dibongkar/diturunkan (kg): ");
+            double inputTurun = in.nextDouble();
+            System.out.println("Membongkar muat/menurunkan barang seberat " + inputTurun + " kg...");
+            
+            double muatanAwal = kontainerAlfa.getBeratMuatanSaatIni();
+            kontainerAlfa.turunkanMuatan(inputTurun);
+            System.out.println("Berat muatan saat ini: " + kontainerAlfa.getBeratMuatanSaatIni() + " kg\n");
 
-        System.out.println("\nMembongkar muat/menurunkan barang seberat 500 kg...");
-        kontainerAlfa.turunkanMuatan(2500);
-        System.out.println("Berat muatan saat ini: " + kontainerAlfa.getBeratMuatanSaatIni() + " kg");
+            if (kontainerAlfa.getBeratMuatanSaatIni() < muatanAwal) {
+                selesai = true;
+            }
+        }
 
-        System.out.println("\nMembongkar muat/menurunkan barang seberat 1.500 kg...");
-        kontainerAlfa.turunkanMuatan(2500);
-        System.out.println("Berat muatan saat ini: " + kontainerAlfa.getBeratMuatanSaatIni() + " kg");
+        in.close();
     }
 }
