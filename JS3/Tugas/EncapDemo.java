@@ -20,9 +20,9 @@ public class EncapDemo {
         if (newAge > 30) {
             age = 30;
         } else if (newAge < 18) {
-        age = 18;
+            age = 18;
         } else {
-        age = newAge;
+            age = newAge;
         }
     }
 }
