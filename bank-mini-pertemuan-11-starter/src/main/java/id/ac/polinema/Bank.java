@@ -1,38 +1,39 @@
 package id.ac.polinema;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 public class Bank {
-    // Mengganti Account[] accounts dengan Map
-    private Map<String, Account> accounts = new LinkedHashMap<>();
+    private AccountRepository repository;
+
+    // Constructor menerima repository melalui interface (Dependency Injection)
+    public Bank(AccountRepository repository) {
+        this.repository = repository;
+    }
 
     public boolean addAccount(Account account) {
-        if (accounts.containsKey(account.getAccountNumber())) {
+        if (repository.findByNumber(account.getAccountNumber()) != null) {
             return false;
         }
-        accounts.put(account.getAccountNumber(), account);
+        repository.save(account);
         return true;
     }
 
     public Account findAccount(String accountNumber) {
-        return accounts.get(accountNumber);
+        return repository.findByNumber(accountNumber);
     }
 
     public void printAllAccounts() {
-        for (Account acc : accounts.values()) {
+        for (Account acc : repository.findAll()) {
             acc.printInfo();
         }
     }
 
     public void printMonthlyFees() {
-        for (Account acc : accounts.values()) {
+        for (Account acc : repository.findAll()) {
             System.out.println(acc.getAccountNumber() + " fee: " + acc.monthlyFee());
         }
     }
 
     public void processMonthEnd() {
-        for (Account acc : accounts.values()) {
+        for (Account acc : repository.findAll()) {
             if (acc instanceof InterestBearing bearing) {
                 bearing.applyInterest();
                 System.out.println(acc.getAccountNumber() + " interest applied, new balance: " + acc.getBalance());
@@ -41,7 +42,6 @@ public class Bank {
         }
     }
 
-    // Tambahkan method langkah 2
     public void printHistory(String accountNumber) {
         Account acc = findAccount(accountNumber);
         if (acc == null) {

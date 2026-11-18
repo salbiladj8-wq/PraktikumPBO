@@ -1,0 +1,26 @@
+package id.ac.polinema;
+
+public class BusinessAccount extends Account {
+    private static final double MINIMUM_BALANCE = 1000000;
+    private static final double MONTHLY_FEE = 0;
+
+    public BusinessAccount(String accountNumber, Customer owner, double balance) {
+        super(accountNumber, owner, balance);
+    }
+
+    @Override
+    protected boolean canWithdraw(double amount) {
+        return amount > 0 && (getBalance() - amount) >= MINIMUM_BALANCE;
+    }
+
+    @Override
+    public double monthlyFee() {
+        return MONTHLY_FEE;
+    }
+
+    @Override
+    public void printInfo() {
+        super.printInfo();
+        System.out.println("Account type: Business");
+    }
+}
